@@ -1,0 +1,113 @@
+{
+  "name": "folder-star",
+  "displayName": "Folder Star",
+  "description": "Star your favorite folders for quick access",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.74.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "folderStar.starFolder",
+        "title": "⭐ Star Folder",
+        "icon": "$(star-empty)"
+      },
+      {
+        "command": "folderStar.unstarFolder",
+        "title": "⭐ Unstar Folder",
+        "icon": "$(star-full)"
+      },
+      {
+        "command": "folderStar.openFolder",
+        "title": "Open Folder",
+        "icon": "$(folder-opened)"
+      },
+      {
+        "command": "folderStar.removeStarredFolder",
+        "title": "Remove from Starred",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "folderStar.clearAllStarred",
+        "title": "Clear All Starred Folders",
+        "icon": "$(clear-all)"
+      },
+      {
+        "command": "folderStar.refreshStarred",
+        "title": "Refresh",
+        "icon": "$(refresh)"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "folderStar.starFolder",
+          "when": "explorerResourceIsFolder && !folderStar.isStarred",
+          "group": "2_workspace@1"
+        },
+        {
+          "command": "folderStar.unstarFolder",
+          "when": "explorerResourceIsFolder && folderStar.isStarred",
+          "group": "2_workspace@1"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "folderStar.refreshStarred",
+          "when": "view == starredFolders",
+          "group": "navigation@1"
+        },
+        {
+          "command": "folderStar.clearAllStarred",
+          "when": "view == starredFolders",
+          "group": "navigation@2"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "folderStar.openFolder",
+          "when": "view == starredFolders && viewItem == starredFolder",
+          "group": "inline@1"
+        },
+        {
+          "command": "folderStar.removeStarredFolder",
+          "when": "view == starredFolders && viewItem == starredFolder",
+          "group": "inline@2"
+        }
+      ]
+    },
+    "views": {
+      "explorer": [
+        {
+          "id": "starredFolders",
+          "name": "Starred Folders",
+          "when": "folderStar.hasStarredFolders"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "starredFolders",
+        "contents": "No starred folders yet.\n[Star a folder](command:workbench.files.action.focusFilesExplorer) by right-clicking on any folder in the Explorer."
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.74.0",
+    "@types/node": "16.x",
+    "typescript": "^4.9.4"
+  }
+}
